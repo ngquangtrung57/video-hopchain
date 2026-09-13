@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "video-hopchain-training"
+version = "0.1.0"
+description = "Reward functions and launch scripts for the Video-HopChain training runs"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+
+dependencies = [
+    # Reward function
+    "math-verify",
+    "openai",
+
+    # Data preparation
+    "pandas",
+    "pyarrow>=19.0.0",
+
+    # Eval script
+    "pyyaml",
+    "requests",
+
+    # Version constraints — already installed by verl/lmms-eval,
+    # we just prevent known-breaking versions.
+    "transformers==4.57.0",
+    "numpy==1.26.4",
+    "antlr4-python3-runtime==4.9.3",
+]
+
+# Tested with (managed by verl/lmms-eval, not pinned here):
+# torch==2.8.0+cu128, torchvision==0.23.0+cu128
+# vllm~=0.13.0, ray>=2.41.0
+# flash-attn==2.8.3 (install separately)
+
+[project.optional-dependencies]
+# Install flash-attn separately: pip install flash-attn --no-build-isolation
+# It requires matching CUDA/torch versions and must be compiled from source.
+dev = [
+    "pytest",
+    "ruff",
+]
+
+# Dependency metadata only: the trainer loads the reward file by path.
+[tool.setuptools]
+packages = []
+
+[tool.ruff]
+line-length = 120

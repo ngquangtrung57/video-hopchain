@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "video-hopchain-pipeline"
+version = "0.3.2"
+description = "The Video-HopChain corpus pipeline"
+readme = "README.md"
+requires-python = "==3.12.*"
+
+# The package itself imports only these three. Every model stage talks to an
+# OpenAI-compatible endpoint over the standard library, so no serving stack is
+# needed to run the pipeline against an endpoint you already have.
+dependencies = [
+    "pyarrow==24.0.0",
+    "opencv-python==5.0.0.93",
+    "scenedetect==0.7",
+]
+
+[project.optional-dependencies]
+# Serving the generator, the judge and the solver locally instead of calling a
+# remote endpoint. Not imported by this package. Hard pins = the exact versions of
+# the environment these runs were produced in. Loosening any of them is a real
+# change, not a formality:
+#   * vllm 0.24.0 is load-bearing. It hard-pins torch==2.11.0 / torchvision==0.26.0 itself, and it
+#     defines the chat multimodal contract this code targets (`video_url` content parts +
+#     `mm_processor_kwargs`). Later vllm releases have changed that contract.
+#   * transformers supplies the Qwen3.x processors; vllm only floors it (>=5.5.3), so we pin the
+#     version actually used.
+serve = [
+    "vllm==0.24.0",
+    "transformers==5.12.1",
+    "ray==2.56.0",            # tensor_parallel_size > 1 runs on the Ray executor
+    "pandas==3.0.3",          # parquet emit
+    "numpy==2.2.6",
+    "tqdm==4.68.3",
+]
+# Caption oracle via the Gemini API. Needs GEMINI_API_KEY in the environment.
+# google-genai is NOT installed in the GPU environment, so it carries a floor, not a verified pin.
+caption-gemini = [
+    "google-genai>=1.0",
+    "python-dotenv==1.2.2",
+]
+# Fetching source videos. Same caveat: floors, not verified pins.
+fetch = [
+    "huggingface_hub==1.21.0",
+    "datasets>=3.0",
+    "yt-dlp>=2024.1",
+]
+
+[tool.setuptools]
+packages = ["pipeline"]

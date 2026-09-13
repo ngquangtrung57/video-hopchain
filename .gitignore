@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+.env.*
+.venv/
+# only our parquet-staging scripts, NOT verl's config/data or docs/data
+/training/scripts/data/
+logs/
+outputs/
+out/
+wandb/
+checkpoints/
+*.mp4
+*.parquet
+*.jsonl
+*.pt
+*.safetensors
+.omc/
+.claude/
+.codegraph/
+.pytest_cache/
+.DS_Store
