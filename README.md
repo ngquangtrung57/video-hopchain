@@ -3,7 +3,7 @@
 [**Paper**](https://arxiv.org/abs/XXXX.XXXXX) &nbsp;|&nbsp;
 [**Dataset**](https://huggingface.co/datasets/ngqtrung/video-hopchain) &nbsp;|&nbsp;
 [**Model**](https://huggingface.co/ngqtrung/video-hopchain-8b) &nbsp;|&nbsp;
-[**Collection**](https://huggingface.co/collections/ngqtrung/video-hopchain-6aa68610a711a87d476f6a59)
+[**Collection**](https://huggingface.co/collections/ngqtrung/video-hopchain)
 
 Code for the paper. `pipeline/` builds the Video-HopChain corpus from raw videos. `training/`
 is a fork of [verl](https://github.com/volcengine/verl) that adds Second-Wave Exploration to the
