@@ -4,8 +4,6 @@ __pycache__/
 .env
 .env.*
 .venv/
-# only our parquet-staging scripts, NOT verl's config/data or docs/data
-/training/scripts/data/
 logs/
 outputs/
 out/

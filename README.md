@@ -144,7 +144,7 @@ name of the method in its configuration key `two_wave_enable`, in the metric pre
 | the loss mask on the masked positions | `training/verl/verl/workers/utils/losses.py` |
 | the tests | `training/verl/tests/experimental/agent_loop/test_two_wave_exploration_on_cpu.py` |
 
-The reward function is `training/rewards/vero_reward_wrapper.py`.
+The reward function is `training/rewards/boxed_reward_wrapper.py`.
 
 The shell scripts read their settings from the environment and abort with a message naming the
 variable when one is unset. Set at least `SCRATCH_DIR`, `HOPCHAIN_DIR`, `MODEL_PATH_OVERRIDE`,

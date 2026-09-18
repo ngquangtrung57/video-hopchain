@@ -312,7 +312,7 @@ class AgentLoopBase(ABC):
             # think block so the graded format reward has variance to bootstrap from (base
             # Qwen3-VL-Instruct never emits <think> on its own -> uniform format=0 -> no gradient).
             # Guarded so a template that already emits <think> is not double-tagged. The reward side
-            # (rewards/vero_reward_wrapper.py) prepends the SAME string so the scored text
+            # (rewards/boxed_reward_wrapper.py) prepends the SAME string so the scored text
             # reconstructs faithfully. Processor (VL) path only; the tokenizer-only branch below is
             # never taken for Qwen3-VL.
             if os.environ.get("VERL_THINK_PREFILL", "0") == "1":

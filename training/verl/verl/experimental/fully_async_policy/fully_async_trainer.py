@@ -1419,7 +1419,7 @@ class FullyAsyncTrainer(SeparateRayPPOTrainer):
         except Exception:
             pass
 
-        # format pass rate (vero reward wrapper field). reward_extra_info is
+        # format pass rate (boxed reward wrapper field). reward_extra_info is
         # merged into non_tensor_batch by _fit_compute_advantage; the key is
         # 'format' (a 0/1 float per sample).
         if "format" in ntb:

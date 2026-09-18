@@ -9,7 +9,7 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from vero_reward.math_verify_reward_type_boxed import (
+from boxed_reward.math_verify_reward_type_boxed import (
     acc_reward,
     format_reward,
     _extract_reward_type,

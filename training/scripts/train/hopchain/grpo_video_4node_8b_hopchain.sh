@@ -209,7 +209,7 @@ python3 -m verl.experimental.fully_async_policy.fully_async_main \
     actor_rollout_ref.ref.fsdp_config.reshard_after_forward=true \
     actor_rollout_ref.ref.ulysses_sequence_parallel_size=${sp_size} \
     reward.reward_manager.name=dapo \
-    reward.custom_reward_function.path="${RLVR_ROOT}/rewards/vero_reward_wrapper.py" \
+    reward.custom_reward_function.path="${RLVR_ROOT}/rewards/boxed_reward_wrapper.py" \
     +reward.reward_kwargs.overlong_buffer_cfg.enable=false \
     +reward.reward_kwargs.overlong_buffer_cfg.len=4096 \
     +reward.reward_kwargs.overlong_buffer_cfg.penalty_factor=1.0 \
