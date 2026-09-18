@@ -1,5 +1,5 @@
 #!/bin/bash
-# Second-Wave Exploration arm. Same configuration as launch_plain.sh apart from the
+# Confidence-Gated Exploration arm. Same configuration as launch_plain.sh apart from the
 # exploration block. Set the node names and scheduler job ids in the environment
 # before calling this script.
 set -uo pipefail
@@ -23,7 +23,7 @@ unset WORKER4_NODE WORKER5_NODE
 export EXP_NAME_OVERRIDE=${EXP_NAME_OVERRIDE:-hopchain_twe}
 
 export EXPLORE_ENABLE=true
-export SWE_ENABLE=true
+export CGE_ENABLE=true
 export TRIGGER_MODE=high
 export TOP_PROB_THRESHOLD=0.95
 export EXPLORE_MAX_MEAN=1.0

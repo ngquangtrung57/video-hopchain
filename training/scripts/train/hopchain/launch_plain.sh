@@ -22,6 +22,6 @@ unset WORKER4_NODE WORKER5_NODE
 export EXP_NAME_OVERRIDE=${EXP_NAME_OVERRIDE:-hopchain_grpo}
 
 export EXPLORE_ENABLE=false
-export SWE_ENABLE=false
+export CGE_ENABLE=false
 
 exec bash scripts/train/hopchain/run_4node_hopchain.sh

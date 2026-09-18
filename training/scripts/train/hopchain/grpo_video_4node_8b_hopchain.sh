@@ -112,7 +112,7 @@ echo "Val:  val_before_train=$val_before_train  test_freq=$test_freq  max_sample
 echo "Run:  total_epochs=$total_epochs  save_freq=$save_freq  ckpt_contents=$CKPT_SAVE_CONTENTS"
 echo "Init: $MODEL_PATH"
 echo "Fmt:  VERL_THINK_PREFILL=${VERL_THINK_PREFILL:-0}  VERL_GRADED_THINK_FORMAT=${VERL_GRADED_THINK_FORMAT:-0}"
-echo "Explore: enable=${EXPLORE_ENABLE:-false} swe=${SWE_ENABLE:-false} anchor_fraction=0.5 var_thr=0.0 metric=accuracy explore_max_mean=${EXPLORE_MAX_MEAN:-1.0} tau=${TOP_PROB_THRESHOLD:-0.95} mask_from_loss=true"
+echo "Explore: enable=${EXPLORE_ENABLE:-false} cge=${CGE_ENABLE:-false} anchor_fraction=0.5 var_thr=0.0 metric=accuracy explore_max_mean=${EXPLORE_MAX_MEAN:-1.0} tau=${TOP_PROB_THRESHOLD:-0.95} mask_from_loss=true"
 echo "Explore: trigger=${TRIGGER_MODE:-high} tau=${TOP_PROB_THRESHOLD:-0.95} band=[${TAU_LOW:-0.8},${TAU_HIGH:-0.95}] | filter special=${SKIP_SPECIAL:-true} ws_punct=${SKIP_WS_PUNCT:-true} digits=${SKIP_DIGITS:-true} subword_cont=${SKIP_SUBWORD:-false} | mask_ipc=${VERL_EXPLORATION_IPC_DIR:-/tmp/rvrl_drop_pos}"
 echo "Seq:  prompt=$max_prompt_length  response=$max_response_length  model_len=$max_model_len  pixels=$max_pixels"
 echo "Exp:  $experiment_name"
@@ -216,7 +216,7 @@ python3 -m verl.experimental.fully_async_policy.fully_async_main \
     +reward.reward_kwargs.overlong_buffer_cfg.log=false \
     +reward.reward_kwargs.max_resp_len=${max_response_length} \
     actor_rollout_ref.rollout.exploration.enable=${EXPLORE_ENABLE:-false} \
-    actor_rollout_ref.rollout.exploration.two_wave_enable=${SWE_ENABLE:-false} \
+    actor_rollout_ref.rollout.exploration.two_wave_enable=${CGE_ENABLE:-false} \
     actor_rollout_ref.rollout.exploration.anchor_fraction=0.5 \
     actor_rollout_ref.rollout.exploration.variance_threshold=0.0 \
     actor_rollout_ref.rollout.exploration.variance_metric=accuracy \

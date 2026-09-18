@@ -1,4 +1,4 @@
-# Video-HopChain: Multi-Hop Questions and Second-Wave Exploration for Video Reasoning Models
+# Video-HopChain: Multi-Hop Questions and Confidence-Gated Exploration for Video Reasoning Models
 
 [**Paper**](https://arxiv.org/abs/XXXX.XXXXX) &nbsp;|&nbsp;
 [**Dataset**](https://huggingface.co/datasets/ngqtrung/video-hopchain) &nbsp;|&nbsp;
@@ -6,7 +6,7 @@
 [**Collection**](https://huggingface.co/collections/ngqtrung/video-hopchain)
 
 Code for the paper. `pipeline/` builds the Video-HopChain corpus from raw videos. `training/`
-is a fork of [verl](https://github.com/volcengine/verl) that adds Second-Wave Exploration to the
+is a fork of [verl](https://github.com/volcengine/verl) that adds Confidence-Gated Exploration to the
 fully asynchronous GRPO trainer. The paper specifies the method; this file says where things
 live and how to run them.
 
@@ -18,9 +18,9 @@ their sum. The integers are resampled until every combination of hop answers giv
 sum, so a wrong intermediate hop changes the total. One exact match on one number therefore gives
 the verifiable reward that RLVR needs.
 
-**Second-Wave Exploration (SWE)** recovers the groups that GRPO throws away. With 8 rollouts per
-question, SWE draws the first 4 normally. If all 4 earn the same accuracy, the group carries no
-reward variance and no gradient, so SWE draws the last 4 with the policy's top token masked
+**Confidence-Gated Exploration (CGE)** recovers the groups that GRPO throws away. With 8 rollouts per
+question, CGE draws the first 4 normally. If all 4 earn the same accuracy, the group carries no
+reward variance and no gradient, so CGE draws the last 4 with the policy's top token masked
 wherever its probability exceeds 0.95, inside the reasoning span only. The masked positions leave
 the loss while all 8 rollouts enter the group advantage, so the method spends no extra rollouts.
 
@@ -31,7 +31,7 @@ Accuracy in percent, `lmms-eval` at 100 frames per video, one setting for every 
 | Qwen3-VL-8B-Instruct | 64.0 | 28.1 | 63.5 | 40.7 | 32.0 | 42.7 | 72.6 | 74.7 | 52.3 |
 | + standard RL | 65.8 | 34.3 | 63.0 | 47.4 | 35.9 | 43.4 | 76.1 | 77.6 | 55.4 |
 | + standard RL + Video-HopChain | 68.6 | 36.2 | 64.7 | **48.6** | 42.1 | 45.9 | 77.8 | 79.4 | 57.9 |
-| + standard RL + Video-HopChain + SWE | **69.2** | **37.4** | **67.5** | **48.6** | **44.9** | **46.6** | **78.9** | **81.0** | **59.3** |
+| + standard RL + Video-HopChain + CGE | **69.2** | **37.4** | **67.5** | **48.6** | **44.9** | **46.6** | **78.9** | **81.0** | **59.3** |
 
 ## Get the data and the model
 
@@ -71,7 +71,7 @@ pipeline/
                      hop record
   run.py             runs the stages in order over a folder of videos
 training/
-  verl/              the verl fork that implements Second-Wave Exploration
+  verl/              the verl fork that implements Confidence-Gated Exploration
   rewards/           the reward function
   scripts/patches/   two guards applied to an installed vLLM for Qwen3-VL video inputs
   scripts/train/     the shared training environment and the launch scripts
@@ -118,7 +118,7 @@ one arm:
 | arm | script |
 |---|---|
 | plain GRPO | `training/scripts/train/hopchain/launch_plain.sh` |
-| Second-Wave Exploration | `training/scripts/train/hopchain/launch_swe.sh` |
+| Confidence-Gated Exploration | `training/scripts/train/hopchain/launch_cge.sh` |
 
 Both call `training/scripts/train/hopchain/run_4node_hopchain.sh`, which sets the environment
 and then calls `training/scripts/train/hopchain/grpo_video_4node_8b_hopchain.sh` with every
@@ -131,7 +131,7 @@ python training/scripts/patches/apply_mrope_video_guard.py
 python training/scripts/patches/apply_qwen3vl_embed_guard.py
 ```
 
-Second-Wave Exploration lives in these files of the fork. The implementation keeps the earlier
+Confidence-Gated Exploration lives in these files of the fork. The implementation keeps the earlier
 name of the method in its configuration key `two_wave_enable`, in the metric prefix
 `rvrl/two_wave/` and in the test file names.
 
@@ -150,15 +150,15 @@ The shell scripts read their settings from the environment and abort with a mess
 variable when one is unset. Set at least `SCRATCH_DIR`, `HOPCHAIN_DIR`, `MODEL_PATH_OVERRIDE`,
 `HEAD_NODE`/`HEAD_JOB` and `WORKER{1,2,3}_NODE`/`_JOB`.
 
-### The SWE settings
+### The CGE settings
 
-`launch_swe.sh` differs from `launch_plain.sh` in these variables only, and the values below are
+`launch_cge.sh` differs from `launch_plain.sh` in these variables only, and the values below are
 the ones the paper reports.
 
-| variable | plain | SWE | verl config key |
+| variable | plain | CGE | verl config key |
 |---|---|---|---|
 | `EXPLORE_ENABLE` | `false` | `true` | `rollout.exploration.enable` |
-| `SWE_ENABLE` | `false` | `true` | `rollout.exploration.two_wave_enable` |
+| `CGE_ENABLE` | `false` | `true` | `rollout.exploration.two_wave_enable` |
 | `TRIGGER_MODE` | — | `high` | `rollout.exploration.trigger_mode` |
 | `TOP_PROB_THRESHOLD` | — | `0.95` | `rollout.exploration.top_prob_threshold` |
 | `EXPLORE_MAX_MEAN` | — | `1.0` | `rollout.exploration.explore_max_mean` |
@@ -185,7 +185,7 @@ failed patch is invisible. Re-run them after every vLLM install.
 
 ```bibtex
 @article{videohopchain2026,
-  title   = {Video-HopChain: Multi-Hop Questions and Second-Wave Exploration for Video Reasoning Models},
+  title   = {Video-HopChain: Multi-Hop Questions and Confidence-Gated Exploration for Video Reasoning Models},
   author  = {Nguyen, Quang Trung and Dong, Yuhao and Sun, Shuo and Liu, Shuai and Tian, Shulin and Yap, Kim-Hui and Liu, Ziwei},
   journal = {arXiv preprint},
   year    = {2026}

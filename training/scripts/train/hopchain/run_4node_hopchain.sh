@@ -1,7 +1,7 @@
 #!/bin/bash
 # Wrapper for the four-node Video-HopChain runs: it sets the training
 # environment, clears the nodes, checks that the GPUs are free and then calls
-# the Ray launcher. launch_plain.sh and launch_swe.sh call it.
+# the Ray launcher. launch_plain.sh and launch_cge.sh call it.
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -70,7 +70,7 @@ export RVRL_DECODE_CACHE=${RVRL_DECODE_CACHE:-8}
 export RVRL_DECODE_EXECUTOR=${RVRL_DECODE_EXECUTOR:-1}
 
 export EXPLORE_ENABLE=${EXPLORE_ENABLE:-false}
-export SWE_ENABLE=${SWE_ENABLE:-false}
+export CGE_ENABLE=${CGE_ENABLE:-false}
 
 export TOP_PROB_THRESHOLD=${TOP_PROB_THRESHOLD:-0.95}
 export EXPLORE_MAX_MEAN=${EXPLORE_MAX_MEAN:-1.0}
@@ -206,7 +206,7 @@ log "  exp:        $EXP_NAME_OVERRIDE"
 log "  topology:   ${TRAINER_NNODES} trainer (dp=$((TRAINER_NNODES * 8))) + ${ROLLOUT_NNODES} rollout"
 log "  mini_bsz:   $TRAIN_PROMPT_MINI_BSZ prompts (x8 resp = $((TRAIN_PROMPT_MINI_BSZ * 8)) seq; % dp=$((TRAINER_NNODES*8)) -> $(( (TRAIN_PROMPT_MINI_BSZ*8) % (TRAINER_NNODES*8) )))"
 log "  init:       WARM $MODEL_PATH_OVERRIDE (resume_mode=$RESUME_MODE)"
-log "  explore:    enable=$EXPLORE_ENABLE swe=$SWE_ENABLE"
+log "  explore:    enable=$EXPLORE_ENABLE cge=$CGE_ENABLE"
 log "  val_max:    $VAL_MAX_SAMPLES"
 log "  trigger:    mode=$TRIGGER_MODE tau=$TOP_PROB_THRESHOLD band=[$TAU_LOW,$TAU_HIGH]"
 log "  filter:     special=$SKIP_SPECIAL ws_punct=$SKIP_WS_PUNCT digits=$SKIP_DIGITS subword_cont=$SKIP_SUBWORD"
